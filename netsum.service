@@ -1,0 +1,7 @@
+[Unit]
+Description=Service file for netsum script
+After=default.target
+[Service]
+ExecStart=/usr/local/bin/netsum_service
+[Install]
+WantedBy=default.target
