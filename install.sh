@@ -20,7 +20,7 @@ echo "nohook wpa_supplicant" | sudo tee -a /etc/dhcpcd.conf;
 sudo systemctl stop wpa_supplicant.service;
 sudo systemctl disable wpa_suplicant.service;
 
-echo "inteface=eth0" | sudo tee /etc/dnsmasq.conf;
+echo "interface=eth0" | sudo tee /etc/dnsmasq.conf;
 echo "dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,12h" | sudo tee -a /etc/dnsmasq.conf;
 echo "dhcp-option=3,192.168.4.1" | sudo tee -a /etc/dnsnasq.conf;
 echo "dhcp-option=6,192.168.4.1" | sudo tee -a  /etc/dnsmasq.conf;
