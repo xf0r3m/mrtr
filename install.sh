@@ -56,3 +56,17 @@ sudo apt install git -y;
 git clone https://github.com/goodtft/LCD-show.git;
 cd LCD-show;
 sudo ./LCD35-show;
+
+cd;
+git clone https://github.com/xf0r3m/mrtr;
+sudo cp -vv ~/mrtr/netsum /usr/local/bin;
+sudo cp -vv ~/mrtr/netsum_service /usr/local/bin;
+sudo cp -vv ~/mrtr/wlansum.sh /usr/local/bin/wlansum;
+sudo cp -vv ~/mrtr/wlanconn.sh /usr/local/bin/wlanconn;
+sudo chmod +x /usr/local/bin/*;
+sudo cp ~/mrtr/netsum.service /etc/systemd/system;
+sudo systemctl enable netsum.service;
+
+cd;
+rm -rf ~/LCD-show;
+rm -rf ~/mrtr;
