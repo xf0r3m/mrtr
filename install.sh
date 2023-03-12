@@ -20,15 +20,16 @@ echo "nohook wpa_supplicant" | sudo tee -a /etc/dhcpcd.conf;
 sudo systemctl stop wpa_supplicant.service;
 sudo systemctl disable wpa_suplicant.service;
 
-echo "inteface eth0" > /etc/dnsmasq.conf;
-echo "dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,12h" >> /etc/dnsmasq.conf;
-echo "dhcp-option=3,192.168.4.1" >> /etc/dnsnasq.conf;
-echo "dhcp-option=6,192.168.4.1" >> /etc/dnsmasq.conf;
+echo "inteface eth0" | sudo tee /etc/dnsmasq.conf;
+echo "dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,12h" | sudo tee -a /etc/dnsmasq.conf;
+echo "dhcp-option=3,192.168.4.1" | sudo tee -a /etc/dnsnasq.conf;
+echo "dhcp-option=6,192.168.4.1" | sudo tee -a  /etc/dnsmasq.conf;
 
 sudo systemctl restart dnsmasq.service;
-sudo systemctl status dnsmasq.service;
+sudo systemctl status dnsmasq.service --no-pager;
 
 sudo useradd -m -s /bin/bash pi
+echo "pi:rasp83rry" | chpasswd;
 echo "pi ALL=(ALL:ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers;
 
 sudo mkdir /etc/wlanconn;
@@ -53,10 +54,6 @@ sudo iptables -A INPUT -p udp --sport 17003 -j ACCEPT;
 sudo netfilter-persistent save;
 
 sudo apt install git -y;
-git clone https://github.com/goodtft/LCD-show.git;
-cd LCD-show;
-sudo ./LCD35-show;
-
 cd;
 git clone https://github.com/xf0r3m/mrtr;
 sudo cp -vv ~/mrtr/netsum /usr/local/bin;
@@ -66,7 +63,11 @@ sudo cp -vv ~/mrtr/wlanconn.sh /usr/local/bin/wlanconn;
 sudo chmod +x /usr/local/bin/*;
 sudo cp ~/mrtr/netsum.service /etc/systemd/system;
 sudo systemctl enable netsum.service;
+rm -rf ~/mrtr;
 
 cd;
-rm -rf ~/LCD-show;
-rm -rf ~/mrtr;
+git clone https://github.com/goodtft/LCD-show.git;
+cd LCD-show;
+sudo ./LCD35-show;
+
+
