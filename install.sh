@@ -13,7 +13,8 @@ sudo apt upgrade -y;
 
 sudo apt install dnsmasq hostapd iptables netfilter-persistent iptables-persistent -y;
 
-sudo systemctl disable systemd-rfkill.service;
+sudo systemctl disable systemd-rfkill;
+sudo systemctl mask systemd-rfkill;
 sudo apt purge rfkill*;
 
 echo "interface eth0" | sudo tee /etc/dhcpcd.conf;
