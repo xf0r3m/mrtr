@@ -29,7 +29,7 @@ sudo systemctl restart dnsmasq.service;
 sudo systemctl status dnsmasq.service --no-pager;
 
 sudo useradd -m -s /bin/bash pi
-echo "pi:rasp83rry" | chpasswd;
+echo "pi:rasp83rry" | sudo chpasswd;
 echo "pi ALL=(ALL:ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers;
 
 sudo mkdir /etc/wlanconn;
