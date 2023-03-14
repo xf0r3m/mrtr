@@ -41,10 +41,6 @@ sudo chown root:wlanconn /etc/wlanconn;
 sudo chmod 775 /etc/wlanconn;
 sudo usermod -aG wlanconn pi;
 
-defaultListenAddressLine=$(grep '^#ListenAddress\ 0\.0\.0\.0' /etc/ssh/sshd_config);
-newListenAddressLine="ListenAddress 192.168.4.1";
-sudo sed -i "s/${defaultListenAddressLine}/${newListenAddressLine}/" /etc/ssh/sshd_config;
-
 echo "net.ipv4.ip_forward=1" | sudo tee -a /etc/sysctl.d/mrtr.conf;
 
 sudo iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE;
