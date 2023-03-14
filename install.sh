@@ -13,7 +13,10 @@ sudo apt upgrade -y;
 
 sudo apt install dnsmasq hostapd iptables netfilter-persistent iptables-persistent -y;
 
-echo "interface eth0" | sudo tee -a /etc/dhcpcd.conf;
+sudo systemctl disable systemd-rkfill.service;
+sudo apt purge rfkill*;
+
+echo "interface eth0" | sudo tee /etc/dhcpcd.conf;
 echo -e "\tstatic ip_address=192.168.4.1/24" | sudo tee -a /etc/dhcpcd.conf;
 echo | sudo tee -a /etc/dhcpcd.conf;
 echo "nohook wpa_supplicant" | sudo tee -a /etc/dhcpcd.conf;
