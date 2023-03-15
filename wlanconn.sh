@@ -16,12 +16,12 @@ function help() {
 }
 
 if ps -aux | grep -q '^root.*wpa_supplicant'; then
-  kill -9 $(ps -aux | grep '^root.*wpa_supplicant' | awk '{printf $2" "}')
+  sudo kill -9 $(ps -aux | grep '^root.*wpa_supplicant' | awk '{printf $2" "}')
 fi
 
 if [ "$1" ]; then
   if [ "$1" = "list" ]; then
-    /usr/local/bin/wlansum;
+    sudo /usr/local/bin/wlansum;
   elif [ "$1" = "help" ]; then
     help;
     exit 0;
