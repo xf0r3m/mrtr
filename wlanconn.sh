@@ -15,6 +15,10 @@ function help() {
   echo -e "\t$ wlanconn <essid> #FOR OPEN NETWORKS";
 }
 
+if ps -aux | grep -q '^root.*wpa_supplicant'; then
+  kill -9 $(ps -aux | grep '^root.*wpa_supplicant' | awk '{printf $2" "}')
+fi
+
 if [ "$1" ]; then
   if [ "$1" = "list" ]; then
     /usr/local/bin/wlansum;

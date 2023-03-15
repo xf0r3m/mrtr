@@ -57,22 +57,53 @@ function api() {
                       fi;;
         'w_channel') if is_wlan $interface; then
                           frequency=$(sudo iwconfig wlan0 | grep -o 'Frequency:2\.[0-9]*\ GHz' | cut -d ":" -f 2 | awk '{printf $1}');
-                          case $frequency in
-                            '2.412') value='1';;
-                            '2.417') value='2';;
-                            '2.422') value='3';;
-                            '2.427') value='4';;
-                            '2.432') value='5';;
-                            '2.437') value='6';;
-                            '2.442') value='7';;
-                            '2.447') value='8';;
-                            '2.452') value='9';;
-                            '2.457') value='10';;
-                            '2.462') value='11';;
-                            '2.467') value='12';;
-                            '2.472') value='13';;
-                            '2.484') value='14';;
-                          esac
+                          if [ "$frequency" ]; then
+                            case $frequency in
+                              '2.412') value='1';;
+                              '2.417') value='2';;
+                              '2.422') value='3';;
+                              '2.427') value='4';;
+                              '2.432') value='5';;
+                              '2.437') value='6';;
+                              '2.442') value='7';;
+                              '2.447') value='8';;
+                              '2.452') value='9';;
+                              '2.457') value='10';;
+                              '2.462') value='11';;
+                              '2.467') value='12';;
+                              '2.472') value='13';;
+                              '2.484') value='14';;
+                            esac
+                          else
+                            frequency=$(sudo iwconfig wlan0 | grep -o 'Frequency:5\.[0-9]*\ GHz' | cut -d ":" -f 2 | awk '{printf $1}');
+                            case $frequency in
+                              '5.18') value="36";;
+                              '5.20') value="40";;
+                              '5.22') value="44";;
+                              '5.24') value="48";;
+                              '5.26') value="52";;
+                              '5.28') value="56";;
+                              '5.30') value="60";;
+                              '5.32') value="64";;
+                              '5.50') value="100";;
+                              '5.52') value="104";;
+                              '5.54') value="108";;
+                              '5.56') value="112";;
+                              '5.58') value="116";;
+                              '5.60') value="120";;
+                              '5.62') value="124";;
+                              '5.64') value="128";;
+                              '5.66') value="132";;
+                              '5.68') value="136";;
+                              '5.70') value="140";;
+                              '5.72') value="144";;
+                              '5.74') value="149";;
+                              '5.76') value="153";;
+                              '5.78') value="157";;
+                              '5.80') value="161";;
+                              '5.82') value="165";;
+                            esac 
+                          fi
                           value="${value} (${frequency} GHz)";
                       fi;;
         'v_state') if ip a | grep -q 'tun[0-9]*'; then
