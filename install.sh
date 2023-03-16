@@ -11,7 +11,7 @@
 sudo apt update;
 sudo apt upgrade -y;
 
-sudo apt install dnsmasq hostapd iptables netfilter-persistent iptables-persistent -y;
+sudo apt install dnsmasq hostapd iptables netfilter-persistent iptables-persistent openvpn -y;
 
 sudo systemctl disable systemd-rfkill;
 sudo systemctl mask systemd-rfkill;

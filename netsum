@@ -50,7 +50,8 @@ function api() {
                           value=$(iwconfig $interface | grep -o 'ESSID:.*$' | cut -d ":" -f 2);
                     fi;;
         'w_bitrate') if is_wlan $interface; then
-                          value=$(iwconfig $interface | grep -o 'Bit\ Rate=[0-9]*\ Mb\/s' | cut -d "=" -f 2);
+                          value=$(iwconfig $interface | grep -o 'Bit\ Rate=.*' | awk '{printf $2}' | cut -d "=" -f 2);
+                          value="${value} Mb/s";
                       fi;;
         'w_signal') if is_wlan $interface; then
                           value=$(iwconfig $interface | grep -o 'Signal\ level=\-[0-9]*\ dBm' | cut -d "=" -f 2);
