@@ -45,11 +45,11 @@ sudo usermod -aG wlanconn pi;
 echo "net.ipv4.ip_forward=1" | sudo tee -a /etc/sysctl.d/mrtr.conf;
 
 sudo iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE;
-sudo iptables -A INPUT -i wlan0 -p udp -j DROP;
-sudo iptables -A INPUT -i wlan0 -p tcp --syn -j DROP;
 sudo iptables -A INPUT -p udp --sport 53 -j ACCEPT;
 sudo iptables -A INPUT -p udp --sport 67 -j ACCEPT;
 sudo iptables -A INPUT -p udp --sport 17003 -j ACCEPT;
+sudo iptables -A INPUT -i wlan0 -p udp -j DROP;
+sudo iptables -A INPUT -i wlan0 -p tcp --syn -j DROP;
 
 sudo netfilter-persistent save;
 
