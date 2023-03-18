@@ -36,6 +36,9 @@ sudo useradd -m -s /bin/bash pi
 echo "pi:rasp83rry" | sudo chpasswd;
 echo "pi ALL=(ALL:ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers;
 
+sudo hostnamectl set-hostname mrtr;
+sudo sed -i 's/raspberrypi/mrtr/g' /etc/hosts
+
 sudo mkdir /etc/wlanconn;
 sudo groupadd wlanconn;
 sudo chown root:wlanconn /etc/wlanconn;
