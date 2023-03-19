@@ -75,7 +75,11 @@ verb 3
 EOF
                               send /tmp/client.conf;
                               copy /home/pi/client.conf /etc/openvpn/client/client.conf;;
-                    'connect') ssh pi@mrtr.local "cd /etc/openvpn/client; sudo openvpn --daemon --config client.conf";;
+                    'connect') ssh pi@mrtr.local "sudo systemctl start openvpn.service";
+                                echo "OpenVPN service is starting but"
+                                echo "if you are using private key with password";
+                                echo "(which is recommended), remeber";
+                                echo "to execute: 'mrtr openvpn pkp' immediately";
                     'certs') if [ "$3" ]; then
                               filename=$(basename $3);
                               send $3;
@@ -88,7 +92,6 @@ EOF
                           stty -echo;
                           ssh pi@mrtr.local "sudo systemd-tty-ask-password-agent";
                           stty echo;;
-                    'route') 
                   esac
                 else
                   help;

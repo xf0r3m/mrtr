@@ -1,0 +1,8 @@
+[Unit]
+Description=OpenVPN - Virtual Private Network service
+[Service]
+WorkingDirectory=/etc/openvpn/client
+User=root
+Group=root
+ExecStart=/usr/sbin/openvpn --config client.conf
+ExecStop=kill -SIGINT $MAINPID
