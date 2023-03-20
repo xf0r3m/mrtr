@@ -79,7 +79,7 @@ EOF
                                 echo "OpenVPN service is starting but"
                                 echo "if you are using private key with password";
                                 echo "(which is recommended), remeber";
-                                echo "to execute: 'mrtr openvpn pkp' immediately";
+                                echo "to execute: 'mrtr openvpn pkp' immediately";;
                     'certs') if [ "$3" ]; then
                               filename=$(basename $3);
                               send $3;
@@ -92,6 +92,7 @@ EOF
                           stty -echo;
                           ssh pi@mrtr.local "sudo systemd-tty-ask-password-agent";
                           stty echo;;
+                    'route') ssh pi@mrtr.local "bash /usr/local/bin/openvpn-setroute";;
                   esac
                 else
                   help;
@@ -110,7 +111,7 @@ EOF
               help;
               exit 1;
             fi;;
-    'shell') ssh pi@mrtr;
+    'shell') ssh pi@mrtr.local;;
     'reboot') ssh pi@mrtr.local "sudo reboot";;
     'poweroff') ssh pi@mrtr.local "sudo poweroff";;         
   esac

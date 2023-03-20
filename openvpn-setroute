@@ -1,0 +1,13 @@
+#!/bin/bash
+
+vpn_node=$(cat /etc/openvpn/client/client.conf | grep 'remote' | awk '{printf $2}');
+wan_gateway=$(ip route show | grep '^default' | awk '{printf $3}')
+tun0_ip=$(ip addr show tun0 | grep 'inet\ ' | awk '{printf $2}' | cut -d "/" -f 1);
+wan_if=$(ip route show | grep '^default' | awk '{printf $5}')
+
+sudo ip route add ${vpn_node}/32 via ${wan_gateway} dev ${wan_if};
+sudo ip route del default;
+sudo ip route add default via ${tun0_ip};
+sudo iptables -t nat -D POSTROUTING 1
+sudo iptables -t nat -A POSTROUTING -o tun0 -j MASQUERADE
+

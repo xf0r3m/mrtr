@@ -64,6 +64,7 @@ sudo cp -vv ~/mrtr/netsum /usr/local/bin;
 sudo cp -vv ~/mrtr/netsum_service /usr/local/bin;
 sudo cp -vv ~/mrtr/wlansum.sh /usr/local/bin/wlansum;
 sudo cp -vv ~/mrtr/wlanconn.sh /usr/local/bin/wlanconn;
+sudo cp -vv ~/mrtr/openvpn-setroute /usr/local/bin/openvpn-setroute;
 sudo chmod +x /usr/local/bin/*;
 sudo cp ~/mrtr/netsum.service /etc/systemd/system;
 sudo cp ~/mrtr/openvpn.service /etc/systemd/system;
