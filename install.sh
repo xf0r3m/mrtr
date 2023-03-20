@@ -16,7 +16,7 @@ sudo systemctl stop openvpn.service;
 sudo systemctl disable openvpn.service;
 sudo systemctl disable systemd-rfkill;
 sudo systemctl mask systemd-rfkill;
-sudo apt purge rfkill -y*;
+sudo apt purge -y rfkill*;
 
 echo "interface eth0" | sudo tee /etc/dhcpcd.conf;
 echo -e "\tstatic ip_address=192.168.4.1/24" | sudo tee -a /etc/dhcpcd.conf;
@@ -66,7 +66,7 @@ sudo cp -vv ~/mrtr/wlansum.sh /usr/local/bin/wlansum;
 sudo cp -vv ~/mrtr/wlanconn.sh /usr/local/bin/wlanconn;
 sudo chmod +x /usr/local/bin/*;
 sudo cp ~/mrtr/netsum.service /etc/systemd/system;
-sudo cp ~/mrtr/openvpn.service /etc/system/system;
+sudo cp ~/mrtr/openvpn.service /etc/systemd/system;
 sudo systemctl daemon-reload;
 sudo systemctl enable netsum.service;
 rm -rf ~/mrtr;
