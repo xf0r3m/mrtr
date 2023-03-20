@@ -57,6 +57,8 @@ wpa_pairwise=TKIP
 rsn_pairwise=CCMP
 EOF
 
+sudo cp hostapd.conf /etc/hostapd
+
 sudo systemctl unmask hostapd
 sudo systemctl enable hostapd
 
