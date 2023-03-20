@@ -4,6 +4,7 @@
 # w - wireless
 # v - vpn
 # a - any
+# p - ap
 
 function is_eth() {
   if echo $1 | grep -q 'eth[0-9]*'; then return 0; else return 1; fi
@@ -124,6 +125,15 @@ function api() {
           'v_country') if is_vpn_connected; then
                           value=$(whois $(curl ifconfig.me/ip 2> /dev/null) | grep -o '^country:.*$' | awk '{printf $2}')
                         fi;;
+	  'p_ssid') if is_wlan $interface && sudo iwconfig $interface | grep -qo 'Master'; then
+		  	value=$(cat /etc/hostapd/hostapd.conf | grep '^ssid' | cut -d "=" -f 2);
+			fi;;
+	  'p_channel') if is_wlan $interface && sudo iwconfig $interface | grep -qo 'Master'; then
+		  	value=$(cat /etc/hostapd/hostapd.conf | grep '^channel' | cut -d "=" -f 2);
+			fi;;
+	  'p_mode') if is_wlan $interface && sudo iwconfig $interface | grep -qo 'Master'; then
+		  	value=$(cat /etc/hostapd/hostapd.conf | grep '^hw_mode' | cut -d "=" -f 2);
+			fi;;
 			esac
       if [ ! "$value" ]; then value="N/A"; fi
       echo $value; 
@@ -158,7 +168,11 @@ function output() {
       echo -e "\tLink speed: $(api $iface 'e_get_link_speed')";
       elementary_info $iface;
 	  elif echo $iface | grep -q 'wlan'; then
+		  if sudo iwconfig wlan0 | grep -qo 'Master'; then
+			  echo -e "\tType: AP"; # dla testów
+		  else
 		  echo -e "\tType: Wireless"; # dla testów
+		  fi 
       echo -e "\tSSID: $(api $iface 'w_essid')";
       echo -e "\tBit rate: $(api $iface 'w_bitrate')";
       echo -e "\tSignal: $(api $iface 'w_signal')";
