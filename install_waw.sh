@@ -3,15 +3,14 @@
 # WLAN as WAN
 # ETH as LAN (192.168.4.1/24)
 # dnsmasq (as dhcp server and dns cache)
-# hostapd (just installed)
-# SSH (opened only on ETH)
-# iptables (for drop policy and NAT)
+# SSH (blocked on WLAN through firewall)
+# iptables (for accept policy,  drop rules and NAT)
 # add pi user with sudo without password
 
 sudo apt update;
 sudo apt upgrade -y;
 
-sudo apt install dnsmasq hostapd iptables netfilter-persistent iptables-persistent openvpn whois -y;
+sudo apt install dnsmasq iptables netfilter-persistent iptables-persistent openvpn whois -y;
 sudo systemctl stop openvpn.service;
 sudo systemctl disable openvpn.service;
 sudo systemctl disable systemd-rfkill;
