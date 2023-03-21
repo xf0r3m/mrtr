@@ -125,15 +125,20 @@ function api() {
           'v_country') if is_vpn_connected; then
                           value=$(whois $(curl ifconfig.me/ip 2> /dev/null) | grep -o '^country:.*$' | awk '{printf $2}')
                         fi;;
-	  'p_ssid') if is_wlan $interface && sudo iwconfig $interface | grep -qo 'Master'; then
-		  	value=$(cat /etc/hostapd/hostapd.conf | grep '^ssid' | cut -d "=" -f 2);
-			fi;;
-	  'p_channel') if is_wlan $interface && sudo iwconfig $interface | grep -qo 'Master'; then
-		  	value=$(cat /etc/hostapd/hostapd.conf | grep '^channel' | cut -d "=" -f 2);
-			fi;;
-	  'p_mode') if is_wlan $interface && sudo iwconfig $interface | grep -qo 'Master'; then
-		  	value=$(cat /etc/hostapd/hostapd.conf | grep '^hw_mode' | cut -d "=" -f 2);
-			fi;;
+	        'p_ssid') if is_wlan $interface && sudo iwconfig $interface | grep -qo 'Master'; then
+		  	              value=$(cat /etc/hostapd/hostapd.conf | grep '^ssid' | cut -d "=" -f 2);
+			              fi;;
+	        'p_channel') if is_wlan $interface && sudo iwconfig $interface | grep -qo 'Master'; then
+		  	                ch=$(cat /etc/hostapd/hostapd.conf | grep '^channel' | cut -d "=" -f 2);
+			                  freq=$(sudo iw phy | grep "\[${ch}\]" | awk '{printf $2}' | grep -o '[0-9]' | sed '2i .' | awk '{printf $1}');
+			                  value="${ch} (${freq} GHz)";	
+			                 fi;;
+	        'p_mode') if is_wlan $interface && sudo iwconfig $interface | grep -qo 'Master'; then
+		  	              value=$(cat /etc/hostapd/hostapd.conf | grep '^hw_mode' | cut -d "=" -f 2);
+			              fi;;
+	        'p_psk') if is_wlan $interface && sudo iwconfig $interface | grep -qo 'Master'; then
+		  	              value=$(cat /etc/hostapd/hostapd.conf | grep '^wpa_passphrase' | cut -d "=" -f 2);
+		  	           fi;;
 			esac
       if [ ! "$value" ]; then value="N/A"; fi
       echo $value; 
@@ -170,13 +175,20 @@ function output() {
 	  elif echo $iface | grep -q 'wlan'; then
 		  if sudo iwconfig wlan0 | grep -qo 'Master'; then
 			  echo -e "\tType: AP"; # dla testów
+			  echo -e "\tSSID: $(api $iface 'p_ssid')";
+			  if [ $SHOW_PSK = 0 ]; then
+				  echo -e "\tPSK: $(api $iface 'p_psk')";
+			  fi
+        echo -e "\tMode: $(api $iface 'p_mode')";
+     	  echo -e "\tChannel: $(api $iface 'p_channel')";
+			  
 		  else
-		  echo -e "\tType: Wireless"; # dla testów
+		    echo -e "\tType: Wireless"; # dla testów
+		  	echo -e "\tSSID: $(api $iface 'w_essid')";
+      	echo -e "\tBit rate: $(api $iface 'w_bitrate')";
+      	echo -e "\tSignal: $(api $iface 'w_signal')";
+      	echo -e "\tChannel: $(api $iface 'w_channel')";
 		  fi 
-      echo -e "\tSSID: $(api $iface 'w_essid')";
-      echo -e "\tBit rate: $(api $iface 'w_bitrate')";
-      echo -e "\tSignal: $(api $iface 'w_signal')";
-      echo -e "\tChannel: $(api $iface 'w_channel')";
       elementary_info $iface;
     else
 		  continue;
@@ -200,6 +212,9 @@ function output() {
   echo -e "\tVPN node: $(api 'eth0' 'v_node')";
   echo -e "\tVPN country: $(api 'eth0' 'v_country')";
 }
+
+#CONSTS:
+export SHOW_PSK=0;
 
 if ([ "$1" ] && [ "$1" = "-o" ]) && ([ "$2" ] && [ "$2" = "stdout" ]); then
   output;
