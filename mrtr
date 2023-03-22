@@ -8,6 +8,16 @@ function copy() {
   ssh pi@mrtr.local "sudo cp -vv $1 $2";
 }
 
+function changein_hostapd() {
+  ssh pi@mrtr.local "oldLine=\$(grep "^$1" /etc/hostapd/hostapd.conf); sudo sed -i \"s/\${oldLine}/${1}=${2}/\" /etc/hostapd/hostapd.conf";
+}
+
+function service_restart() {
+  ssh pi@mrtr.local "sudo systemctl restart $1";
+  ssh pi@mrtr.local "sudo systemctl status $1 --no-pager";
+}
+
+
 if [ "$1" ]; then
   case "$1" in
     'passwd') stty -echo;
@@ -111,6 +121,49 @@ EOF
               help;
               exit 1;
             fi;;
+    'ap') if [ "$2" ]; then
+            case $2 in
+              'ssid') if [ "$3" ]; then
+                        changein_hostapd 'ssid' $3;
+                      else
+                        help;
+                        exit 1;
+                      fi;;
+              'mode') if [ "$3" ] && $(echo $3 | grep -E 'a|b|g'); then
+                        changein_hostapd 'mode' $3;
+                        if [ "$3" = "a" ]; then
+                          echo "Now you must set properly channel for 5GHz.";
+                          echo "The script is terminating now.";
+                          exit 0;
+                        fi
+                      else
+                        help;
+                        exit 1;
+                      fi;;
+              'channel') if [ "$3" ] && ([ $3 -gt 0 ] && [ $3 -lt 15 ]); then
+                          changein_hostapd 'channel' $3;
+                         else
+                          help;
+                          exit 1;
+                         fi;;
+              'hide_ssid') if [ "$3" ] && ([ $3 -ge 0 ] && [ $3 -le 1 ]); then
+                            changein_hostapd 'ignore_broadcast_ssid' $3;
+                           else
+                            help;
+                            exit 1;
+                           fi;;
+              'psk') if [ "$3" ] && ([ $(echo $3 | wc -c) -ge 8 ] && [ $(echo $3 | wc -c) -le 63 ]); then
+                      changein_hostapd 'wpa_passphrase' $3;
+                     else
+                      help;
+                      exit 1;
+                     fi;;
+            esac
+            service_restart 'hostapd.service';
+          else
+            help;
+            exit 1;
+          fi;;
     'shell') ssh pi@mrtr.local;;
     'reboot') ssh pi@mrtr.local "sudo reboot";;
     'poweroff') ssh pi@mrtr.local "sudo poweroff";;         
