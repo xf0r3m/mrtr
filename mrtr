@@ -129,8 +129,8 @@ EOF
                         help;
                         exit 1;
                       fi;;
-              'mode') if [ "$3" ] && $(echo $3 | grep -E 'a|b|g'); then
-                        changein_hostapd 'mode' $3;
+              'mode') if [ "$3" ] && $(echo $3 | grep -qE 'a|b|g'); then
+                        changein_hostapd 'hw_mode' $3;
                         if [ "$3" = "a" ]; then
                           echo "Now you must set properly channel for 5GHz.";
                           echo "The script is terminating now.";
@@ -140,7 +140,7 @@ EOF
                         help;
                         exit 1;
                       fi;;
-              'channel') if [ "$3" ] && ([ $3 -gt 0 ] && [ $3 -lt 15 ]); then
+              'channel') if [ "$3" ] && ( ([ $3 -gt 0 ] && [ $3 -lt 15 ]) || $(echo $3 | grep -Eq "34|36|38|46|52|56|60|64|112|116|120|124|128|132|136|144|149|153|157|161|165") ); then
                           changein_hostapd 'channel' $3;
                          else
                           help;
