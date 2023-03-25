@@ -68,7 +68,6 @@ sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE;
 sudo iptables -A INPUT -p udp --sport 53 -j ACCEPT;
 sudo iptables -A INPUT -p udp --sport 67 -j ACCEPT;
 sudo iptables -A INPUT -p udp --sport 17003 -j ACCEPT;
-sudo iptables -A INPUT -i eth0 -p tcp --dport 22 -j ACCEPT;
 sudo iptables -A INPUT -i eth0 -p udp -j DROP;
 sudo iptables -A INPUT -i eth0 -p tcp --syn -j DROP;
 
