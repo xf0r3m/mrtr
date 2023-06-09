@@ -17,6 +17,72 @@ function service_restart() {
   ssh pi@mrtr.local "sudo systemctl status $1 --no-pager";
 }
 
+function help() {
+  echo "mrtr - script for config and controling MRTR device";
+  echo "morketsmerke.org @ 2023";
+  echo;
+  echo "password  - set password for MRTR pi user";
+  echo "netsum    - print network summary information";
+  echo "openvpn   - configure a openvpn (client role) service";
+  echo "wlan      - establish connection with wireless LAN network";
+  echo "ap        - configure a broadcasted wireless network";
+  echo "misc      - maintenance commands.";
+  echo;
+  echo "PASSWORD:";
+  echo "  $ mrtr passwd <password_for_pi_user>";
+  echo "  Set new password for administrative user 'pi'. User is created during";
+  echo "  installation. Default password is: rasp83rry";
+  echo;
+  echo "NETSUM:";
+  echo "  $ mrtr netsum";
+  echo "  Print summary information about interface, founded WLAN networks and";
+  echo "  OpenVPN connection state";
+  echo;
+  echo "OPENVPN:";
+  echo "  $ mrtr openvpn <subcommand>";
+  echo "  SUBCOMMANDS:";
+  echo "    nodes - Print information about available morketsmerke VPN network";
+  echo "    nodes.";
+  echo "    config - set OpenVPN parameters";
+  echo "    config <node> <CA certificate> <certificate> <certificate key>";
+  echo "    connect - connect with morketsmerke VPN node";
+  echo "    certs - unpack archive with certificate files. Archive must be";
+  echo "    placed in 'pi' user home directory";
+  echo "    certs <filename>";
+  echo "    pkp - prompt private key (certificate key) password";
+  echo "    route - enabling route your internet trafic through VPN";
+  echo;
+  echo "WLAN: (WAW mode only!)";
+  echo "  $ mrtr wlan <subcommand>";
+  echo "  SUBCOMMANDS:";
+  echo "    list - print all discovered WLANs";
+  echo "    connect - connect to selected network";
+  echo "    connect <ESSID> [psk]";
+  echo "    if we connect to the network, which we had been connected";
+  echo "    previously, the PSK can be omitted";
+  echo;
+  echo "AP: (EAW mode only!)";
+  echo "  $ mrtr ap <subcommand>";
+  echo "  SUBCOMMANDS:";
+  echo "    ssid - setting ESSID for ours WLAN";
+  echo "    mode - set 802.11 mode. Mode 'a' is only for RPI 3B+.";
+  echo "    mode <a|b|g>";
+  echo "    If you are setting 'a' mode, you have to set properly channel for 5GHz";
+  echo "    channel - set WLAN 2.4GHz or 5GHz channel";
+  echo "    channel <channel>";
+  echo "    hide_ssid - turn off/on ESSID broadcasting";
+  echo "    hide_ssid <1|0>";
+  echo "    psk - set pre-shared key for securing WLAN";
+  echo "    psk <passphrase>";
+  echo "    There is no option for other securing or not WLAN access, but you";
+  echo "    do this manual by running a shell";
+  echo;
+  echo "MISC:";
+  echo "$ mrtr <shell|reboot|poweroff>";
+  echo "    shell - run a shell (access via SSH)";
+  echo "    reboot - restart hole device";
+  echo "    poweroff - turn off the device";
+}
 
 if [ "$1" ]; then
   case "$1" in
@@ -172,3 +238,4 @@ else
   help;
   exit 1;
 fi
+
